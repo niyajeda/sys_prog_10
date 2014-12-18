@@ -26,7 +26,6 @@ int main()
   print_matrix(4,2,B);
 
   mmul(3,4,2,A,B,C);
-
   print_matrix(3,2,C);
 
   return 0;
@@ -46,7 +45,7 @@ void print_matrix(int n, int m, int *M)
   printf("\n");
 }
 
-void mmul(int n, int m, int k, int *M1, int *M2, int *M)
+/*void mmul(int n, int m, int k, int *M1, int *M2, int *M)
 {
   int x;
   int y;
@@ -61,4 +60,5 @@ void mmul(int n, int m, int k, int *M1, int *M2, int *M)
       M[y*k+x] = temp;
     }
   }
-}
+}*/
+
